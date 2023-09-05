@@ -27,4 +27,15 @@ def crear(request):
         return redirect('lista')
     return render(request,'Crud/crear.html',{'formulario':formulario})
 
+def eliminar(request,id):
+    buscarC=Clientes.objects.get(id=id)
+    buscarC.delete()
+    return redirect('lista')
 
+def editar(request,id):
+    buscarC=Clientes.objects.get(id=id)
+    formulario=ClientesForm(request.POST or None, request.FILES or None, instance=buscarC)
+    if formulario.is_valid() and request.POST:
+        formulario.save()
+        return redirect('lista')
+    return render(request,'Crud/editar.html',{'formulario':formulario})
